@@ -1,0 +1,339 @@
+import { useMemo, useState } from 'react';
+
+const seedPosts = [
+  {
+    id: 1,
+    author: 'Sophie Martin',
+    handle: '@sophiem',
+    initials: 'SM',
+    time: '2 min',
+    content:
+      'Le design d’un produit ne doit pas seulement être beau : il doit aider les gens à agir plus vite. Le bon UX transforme les simples clics en habitudes.',
+    image: null,
+    likes: 2450,
+    comments: 312,
+    reposts: 421,
+    liked: true,
+  },
+  {
+    id: 2,
+    author: 'Lucas Chen',
+    handle: '@lucasdev',
+    initials: 'LC',
+    time: '12 min',
+    content:
+      'J’ai fini une nouvelle version de dashboard. Le plus important n’était pas le code, mais la compréhension du besoin utilisateur. #UX #Product',
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+    likes: 1280,
+    comments: 94,
+    reposts: 133,
+    liked: false,
+  },
+  {
+    id: 3,
+    author: 'Claire Dubois',
+    handle: '@cldub',
+    initials: 'CD',
+    time: '31 min',
+    content:
+      'Une expérience premium se construit dans les détails : micro-animations, hiérarchie visuelle, cohérence, et surtout, empathie pour les utilisateurs.',
+    image: null,
+    likes: 1840,
+    comments: 208,
+    reposts: 171,
+    liked: false,
+  },
+];
+
+const trends = [
+  { tag: '#React', posts: '12,4K' },
+  { tag: '#Paris', posts: '9,8K' },
+  { tag: '#Design', posts: '5,2K' },
+  { tag: '#AI', posts: '21K' },
+  { tag: '#Création', posts: '3,6K' },
+];
+
+const suggestedUsers = [
+  { name: 'Naomi Lee', handle: '@naomilee', color: 'orange' },
+  { name: 'Jean Martin', handle: '@jeanmar', color: 'green' },
+  { name: 'Sarah K.', handle: '@sarahk', color: 'purple' },
+];
+
+const coinPacks = [
+  { id: 1, label: 'Pack 50', price: '4,99 €', coins: 50 },
+  { id: 2, label: 'Pack 120', price: '9,99 €', coins: 120, bonus: '+15' },
+  { id: 3, label: 'Pack 300', price: '19,99 €', coins: 300, bonus: '+50' },
+  { id: 4, label: 'Pack 800', price: '49,99 €', coins: 800, bonus: '+120' },
+];
+
+function App() {
+  const [posts, setPosts] = useState(seedPosts);
+  const [wallet, setWallet] = useState(240);
+  const [input, setInput] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPack, setSelectedPack] = useState(coinPacks[0]);
+  const [activeTab, setActiveTab] = useState('Accueil');
+
+  const totalLikes = useMemo(
+    () => posts.reduce((sum, post) => sum + post.likes, 0),
+    [posts]
+  );
+
+  const handleAddPost = () => {
+    const content = input.trim();
+    if (!content) return;
+
+    const newPost = {
+      id: Date.now(),
+      author: 'Alexandre Jordan',
+      handle: '@alexjordan',
+      initials: 'AJ',
+      time: 'maintenant',
+      content,
+      image: null,
+      likes: 0,
+      comments: 0,
+      reposts: 0,
+      liked: false,
+    };
+
+    setPosts((current) => [newPost, ...current]);
+    setInput('');
+  };
+
+  const toggleLike = (id) => {
+    setPosts((current) =>
+      current.map((post) => {
+        if (post.id !== id) return post;
+
+        const liked = !post.liked;
+        return {
+          ...post,
+          liked,
+          likes: Math.max(0, post.likes + (liked ? 1 : -1)),
+        };
+      })
+    );
+  };
+
+  const boostPost = (id) => {
+    if (wallet < 25) return;
+
+    setPosts((current) =>
+      current.map((post) =>
+        post.id === id ? { ...post, likes: post.likes + 25 } : post
+      )
+    );
+    setWallet((current) => current - 25);
+  };
+
+  const buyCoins = () => {
+    setWallet((current) => current + selectedPack.coins);
+    setModalOpen(false);
+  };
+
+  return (
+    <div className="app-shell">
+      <aside className="sidebar">
+        <div className="brand-wrap">
+          <div className="brand-icon">𝕏</div>
+        </div>
+
+        <nav className="nav">
+          {['Accueil', 'Explorer', 'Notifications', 'Messages', 'Profil', 'Boutique'].map((label) => (
+            <button
+              key={label}
+              className={`nav-item ${activeTab === label ? 'active' : ''}`}
+              onClick={() => setActiveTab(label)}
+            >
+              <span>{label === 'Accueil' ? '🏠' : label === 'Explorer' ? '🔎' : label === 'Notifications' ? '🔔' : label === 'Messages' ? '✉️' : label === 'Profil' ? '👤' : '🛍️'}</span>
+              {label}
+            </button>
+          ))}
+        </nav>
+
+        <button className="tweet-btn">Publier</button>
+
+        <div className="profile-card">
+          <div className="avatar small gradient-1">AJ</div>
+          <div>
+            <strong>Alexandre Jordan</strong>
+            <span>@alexjordan</span>
+          </div>
+        </div>
+      </aside>
+
+      <main className="feed">
+        <header className="topbar">
+          <div>
+            <p className="eyebrow">Réseau social</p>
+            <h1>{activeTab}</h1>
+          </div>
+          <button className="wallet-btn" onClick={() => setModalOpen(true)}>
+            <span>🪙</span> {wallet} pièces
+          </button>
+        </header>
+
+        <section className="composer">
+          <div className="avatar big gradient-1">AJ</div>
+          <div className="composer-panel">
+            <textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Quoi de neuf ?"
+              rows={4}
+              maxLength={280}
+            />
+            <div className="composer-actions">
+              <div className="composer-tools">
+                <button>🖼️</button>
+                <button>🎞️</button>
+                <button>📊</button>
+                <button>😊</button>
+              </div>
+              <button className="publish-btn" onClick={handleAddPost}>Poster</button>
+            </div>
+          </div>
+        </section>
+
+        <div className="stats-bar">
+          <div>
+            <strong>{posts.length}</strong>
+            <span>Posts</span>
+          </div>
+          <div>
+            <strong>{totalLikes}</strong>
+            <span>Likes totaux</span>
+          </div>
+          <div>
+            <strong>{wallet}</strong>
+            <span>Pièces</span>
+          </div>
+        </div>
+
+        <section className="post-list">
+          {posts.map((post) => (
+            <article className="post-card" key={post.id}>
+              <div className="avatar small gradient-2">{post.initials}</div>
+
+              <div className="post-main">
+                <div className="post-header">
+                  <strong>{post.author}</strong>
+                  <span>{post.handle}</span>
+                  <span>·</span>
+                  <span>{post.time}</span>
+                </div>
+
+                <p className="post-content">{post.content}</p>
+
+                {post.image && (
+                  <img className="post-image" src={post.image} alt="Publication" />
+                )}
+
+                <div className="post-actions">
+                  <button className="action-btn">💬 {post.comments}</button>
+                  <button className="action-btn">🔁 {post.reposts}</button>
+                  <button
+                    className={`action-btn ${post.liked ? 'liked' : ''}`}
+                    onClick={() => toggleLike(post.id)}
+                  >
+                    {post.liked ? '💗' : '🤍'} {post.likes}
+                  </button>
+                  <button className="action-btn boost" onClick={() => boostPost(post.id)}>
+                    🚀 Booster (25)
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </section>
+      </main>
+
+      <aside className="rightbar">
+        <div className="search-box">
+          <span>🔎</span>
+          <input placeholder="Rechercher" />
+        </div>
+
+        <div className="panel">
+          <h3>Tendances</h3>
+          {trends.map((trend) => (
+            <div className="trend-item" key={trend.tag}>
+              <div>
+                <small>Trending</small>
+                <strong>{trend.tag}</strong>
+              </div>
+              <span>{trend.posts}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="panel">
+          <h3>À suivre</h3>
+          {suggestedUsers.map((person) => (
+            <div className="follow-item" key={person.handle}>
+              <div className="user-inline">
+                <div className={`avatar small gradient-${person.color}`}>N</div>
+                <div>
+                  <strong>{person.name}</strong>
+                  <span>{person.handle}</span>
+                </div>
+              </div>
+              <button className="mini-btn">Suivre</button>
+            </div>
+          ))}
+        </div>
+
+        <div className="panel shop-panel">
+          <h3>Boutique de pièces</h3>
+          {coinPacks.map((pack) => (
+            <button
+              key={pack.id}
+              className={`shop-item ${selectedPack.id === pack.id ? 'selected' : ''}`}
+              onClick={() => {
+                setSelectedPack(pack);
+                setModalOpen(true);
+              }}
+            >
+              <div>
+                <strong>{pack.label}</strong>
+                <span>{pack.bonus ? `Bonus +${pack.bonus}` : 'Aucun bonus'}</span>
+              </div>
+              <span>{pack.price}</span>
+            </button>
+          ))}
+        </div>
+      </aside>
+
+      {modalOpen && (
+        <div className="modal-backdrop" onClick={() => setModalOpen(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Recharge de pièces</h3>
+              <button className="close-btn" onClick={() => setModalOpen(false)}>✕</button>
+            </div>
+
+            <div className="pack-preview">
+              <div className="coin-badge">🪙</div>
+              <div>
+                <strong>{selectedPack.label}</strong>
+                <span>{selectedPack.coins} pièces</span>
+              </div>
+            </div>
+
+            <p className="modal-body">
+              Ce pack vous permet de booster vos publications et d’accéder aux avantages premium.
+            </p>
+
+            <div className="modal-footer">
+              <span>{selectedPack.price}</span>
+              <button className="confirm-btn" onClick={buyCoins}>Acheter</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;

@@ -1,177 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Twitter Clone</title>
+    <title>Pulse Social</title>
+    <meta
+      name="description"
+      content="Réseau social moderne avec feed, profil, pièces et boutique d'achats."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="/src/main.jsx"></script>
   </head>
   <body>
-    <div class="app-shell">
-      <aside class="sidebar">
-        <div class="brand" aria-label="Twitter logo">
-          <span class="brand-icon">𝕏</span>
-        </div>
-
-        <nav class="nav" aria-label="Navigation principale">
-          <a href="#" class="nav-item active">
-            <span class="nav-icon">🏠</span>
-            <span>Accueil</span>
-          </a>
-          <a href="#" class="nav-item">
-            <span class="nav-icon">🔎</span>
-            <span>Explorer</span>
-          </a>
-          <a href="#" class="nav-item">
-            <span class="nav-icon">🔔</span>
-            <span>Notifications</span>
-          </a>
-          <a href="#" class="nav-item">
-            <span class="nav-icon">✉️</span>
-            <span>Messages</span>
-          </a>
-          <a href="#" class="nav-item">
-            <span class="nav-icon">📄</span>
-            <span>Listes</span>
-          </a>
-          <a href="#" class="nav-item">
-            <span class="nav-icon">🔖</span>
-            <span>Signets</span>
-          </a>
-          <a href="#" class="nav-item">
-            <span class="nav-icon">👤</span>
-            <span>Profil</span>
-          </a>
-          <a href="#" class="nav-item more">
-            <span class="nav-icon">⋯</span>
-            <span>Plus</span>
-          </a>
-        </nav>
-
-        <button class="tweet-button">Tweeter</button>
-
-        <div class="profile-card">
-          <div class="avatar small">AJ</div>
-          <div class="profile-meta">
-            <strong>Alexandre Jordan</strong>
-            <span>@alexjordan</span>
-          </div>
-          <span class="profile-more">⋯</span>
-        </div>
-      </aside>
-
-      <main class="feed">
-        <header class="topbar">
-          <h1>Accueil</h1>
-          <button class="icon-button" aria-label="Options">✨</button>
-        </header>
-
-        <section class="composer">
-          <div class="avatar large">AJ</div>
-          <form id="tweetForm" class="tweet-form">
-            <textarea
-              id="tweetInput"
-              rows="3"
-              placeholder="Quoi de neuf ?"
-              maxlength="280"
-            ></textarea>
-            <div class="composer-actions">
-              <div class="composer-tools" aria-label="Outils de publication">
-                <button type="button" aria-label="Ajouter une image">🖼️</button>
-                <button type="button" aria-label="Ajouter un GIF">🎞️</button>
-                <button type="button" aria-label="Ajouter un sondage">📊</button>
-                <button type="button" aria-label="Ajouter un emoji">😊</button>
-              </div>
-              <button type="submit" class="post-button">Tweeter</button>
-            </div>
-          </form>
-        </section>
-
-        <div class="divider"></div>
-
-        <section id="tweetList" class="tweet-list" aria-live="polite"></section>
-      </main>
-
-      <aside class="rightbar">
-        <div class="search-box">
-          <span>🔎</span>
-          <input type="text" placeholder="Rechercher" />
-        </div>
-
-        <div class="panel">
-          <h3>Tendances pour toi</h3>
-          <div class="trend-item">
-            <div>
-              <small>Technologie</small>
-              <strong>#React</strong>
-            </div>
-            <span>12,4K</span>
-          </div>
-          <div class="trend-item">
-            <div>
-              <small>Sports</small>
-              <strong>#Paris</strong>
-            </div>
-            <span>9,8K</span>
-          </div>
-          <div class="trend-item">
-            <div>
-              <small>Culture</small>
-              <strong>#Design</strong>
-            </div>
-            <span>5,2K</span>
-          </div>
-          <div class="trend-item">
-            <div>
-              <small>Tech</small>
-              <strong>#AI</strong>
-            </div>
-            <span>21K</span>
-          </div>
-        </div>
-
-        <div class="panel follow-panel">
-          <h3>À suivre</h3>
-          <div class="follow-item">
-            <div class="user-inline">
-              <div class="avatar small gradient-one">N</div>
-              <div>
-                <strong>Naomi Lee</strong>
-                <span>@naomilee</span>
-              </div>
-            </div>
-            <button class="follow-btn">Suivre</button>
-          </div>
-          <div class="follow-item">
-            <div class="user-inline">
-              <div class="avatar small gradient-two">J</div>
-              <div>
-                <strong>Jean Martin</strong>
-                <span>@jeanmar</span>
-              </div>
-            </div>
-            <button class="follow-btn">Suivre</button>
-          </div>
-          <div class="follow-item">
-            <div class="user-inline">
-              <div class="avatar small gradient-three">S</div>
-              <div>
-                <strong>Sarah K.</strong>
-                <span>@sarahk</span>
-              </div>
-            </div>
-            <button class="follow-btn">Suivre</button>
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <script src="script.js"></script>
+    <div id="root"></div>
   </body>
 </html>
